@@ -1,5 +1,53 @@
 ﻿using System.Text.Json;
 
+List<Helicopter> Helicopters = new List<Helicopter>();
+List<Plane> Planes = new List<Plane>();
+List<Train> Trains = new List<Train>();
+List<Car> Cars = new List<Car>();
+
+using (StreamReader sr = new StreamReader(@"E:\Yaromyr\VisStudio\files\transports.txt"))
+{
+    string line;
+    byte key = 0;
+
+    while ((line = sr.ReadLine()) != null)
+    {
+        if (line == "Helicopters:") key = 1;
+        else if (line == "Planes:") key = 2;
+        else if (line == "Trains:") key = 3;
+        else if (line == "Cars:") key = 4;
+        else if (key == 1) Helicopters.Add(JsonSerializer.Deserialize<Helicopter>(line));
+        else if (key == 2) Planes.Add(JsonSerializer.Deserialize<Plane>(line));
+        else if (key == 3) Trains.Add(JsonSerializer.Deserialize<Train>(line));
+        else if (key == 4) Cars.Add(JsonSerializer.Deserialize<Car>(line));
+    }
+}
+
+Console.WriteLine("Який шлях пройти?");
+double Way = Convert.ToDouble(Console.ReadLine());
+Console.WriteLine("Який вид транспорту?");
+string transporting = Console.ReadLine();
+Console.WriteLine("який транспорт вибрати по рахунку?");
+int Whichone = Convert.ToInt32(Console.ReadLine());
+
+switch (transporting)
+{
+    case "Helicopter":
+        Helicopters[Whichone].Travel(Way);
+        break;
+    case "Plane":
+        Planes[Whichone].Travel(Way);
+        break;
+    case "Train":
+        Trains[Whichone].Travel(Way);
+        break;
+    case "Car":
+        Cars[Whichone].Travel(Way);
+        break;
+    default:
+        break;
+}
+
 abstract class Transport
 {
     public string Name { get; set; }
